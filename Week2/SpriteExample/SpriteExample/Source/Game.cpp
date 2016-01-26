@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SFML\Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <Book/Game.hpp>
 #include <Book/StringHelpers.hpp>
 
@@ -55,7 +56,7 @@ void Game::run()
 	}
 }
 
-float Mousex;
+sf::Vector2f MousePos;
 float Mousey;
 bool clicked;
 void Game::processEvents()
@@ -68,8 +69,8 @@ void Game::processEvents()
 		case sf::Event::MouseButtonPressed:
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				std::cout << "mouse was pressed" << std::endl;
-				Mousex = sf::Mouse::getPosition(mWindow).x;
-				Mousey = sf::Mouse::getPosition(mWindow).y;
+				MousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(mWindow));
+				//Mousey = sf::Mouse::getPosition(mWindow).y;
 				
 				clicked = true;
 			}
@@ -102,10 +103,8 @@ void Game::update(sf::Time elapsedTime)
 		movement.x += PlayerSpeed;
 	if (clicked) {
 		//mPlayer.setPosition(Mousex, Mousey);
-		std::cout << toString(mPlayer.getPosition().x) << std::endl;
-		std::cout << toString(mPlayer.getPosition().y);
-		(Mousex > 100) ? movement.x += Mousex : movement.x -= Mousex;
-		//movement.y = Mousey;
+		sf::Vector2f direction = (MousePos) - mPlayer.getPosition();
+		mPlayer.move(direction * elapsedTime.asSeconds());
 	}
 	mPlayer.move(movement * elapsedTime.asSeconds());
 }
