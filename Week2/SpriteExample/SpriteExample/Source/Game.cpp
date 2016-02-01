@@ -105,6 +105,7 @@ void Game::update(sf::Time elapsedTime)
 		//mPlayer.setPosition(Mousex, Mousey);
 		sf::Vector2f direction = (MousePos) - mPlayer.getPosition();
 		mPlayer.move(direction * elapsedTime.asSeconds());
+
 	}
 	mPlayer.move(movement * elapsedTime.asSeconds());
 }
