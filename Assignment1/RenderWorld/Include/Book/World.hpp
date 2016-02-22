@@ -10,6 +10,7 @@
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics.hpp>
 
 #include <array>
 
@@ -26,12 +27,11 @@ class World : private sf::NonCopyable
 		explicit							World(sf::RenderWindow& window);
 		void								update(sf::Time dt);
 		void								draw();
-
-
+		//Assignment 1
+		Aircraft*							getAircraft();
 	private:
 		void								loadTextures();
 		void								buildScene();
-
 
 	private:
 		enum Layer
@@ -52,8 +52,11 @@ class World : private sf::NonCopyable
 
 		sf::FloatRect						mWorldBounds;
 		sf::Vector2f						mSpawnPosition;
+		sf::Vector2f						mMouseLocation;
 		float								mScrollSpeed;
 		Aircraft*							mPlayerAircraft;
+		sf::Texture textureArr[10];
+		sf::IntRect textureRectArr[10];
 };
 
 #endif // BOOK_WORLD_HPP

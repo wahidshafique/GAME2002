@@ -20,6 +20,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 								SceneNode();
 
 		void					attachChild(Ptr child);
+		SceneNode::Ptr&			getChild(int index);
 		Ptr						detachChild(const SceneNode& node);
 		
 		void					update(sf::Time dt);

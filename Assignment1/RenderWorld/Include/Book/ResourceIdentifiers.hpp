@@ -15,6 +15,8 @@ namespace Textures
 		Eagle,
 		Raptor,
 		Desert,
+		Water,
+		Grass
 	};
 }
 

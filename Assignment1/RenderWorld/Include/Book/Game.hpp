@@ -24,7 +24,12 @@ class Game : private sf::NonCopyable
 
 		void					updateStatistics(sf::Time elapsedTime);	
 		void					handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
-		
+		void					doPlayerInput(sf::Time elapsed);
+		bool					mIsMovingUp;
+		bool					mIsMovingDown;
+		bool					mIsMovingLeft;
+		bool					mIsMovingRight;
+		bool					mIsClicked;
 
 	private:
 		static const sf::Time	TimePerFrame;
@@ -36,6 +41,7 @@ class Game : private sf::NonCopyable
 		sf::Text				mStatisticsText;
 		sf::Time				mStatisticsUpdateTime;
 		std::size_t				mStatisticsNumFrames;
+		sf::Vector2f			MousePos;
 };
 
 #endif // BOOK_GAME_HPP

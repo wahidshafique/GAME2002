@@ -16,6 +16,12 @@ void SceneNode::attachChild(Ptr child)
 	child->mParent = this;
 	mChildren.push_back(std::move(child));
 }
+//a1
+SceneNode::Ptr& SceneNode::getChild(int index) {
+	assert(index < mChildren.size());
+	Ptr& found = std::move(mChildren.at(index));
+	return found;
+}
 
 SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 {
