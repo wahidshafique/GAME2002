@@ -27,7 +27,6 @@ class World : private sf::NonCopyable
 		explicit							World(sf::RenderWindow& window);
 		void								update(sf::Time dt);
 		void								draw();
-		//Assignment 1
 		Aircraft*							getAircraft();
 	private:
 		void								loadTextures();
@@ -50,13 +49,13 @@ class World : private sf::NonCopyable
 		SceneNode							mSceneGraph;
 		std::array<SceneNode*, LayerCount>	mSceneLayers;
 
+		Aircraft*							mPlayerAircraft;
 		sf::FloatRect						mWorldBounds;
 		sf::Vector2f						mSpawnPosition;
 		sf::Vector2f						mMouseLocation;
 		float								mScrollSpeed;
-		Aircraft*							mPlayerAircraft;
-		sf::Texture textureArr[10];
-		sf::IntRect textureRectArr[10];
+		sf::Texture textureArr[3];
+		sf::IntRect textureRectArr[3];
 };
 
 #endif // BOOK_WORLD_HPP

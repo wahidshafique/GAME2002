@@ -33,7 +33,22 @@ void World::update(sf::Time dt)
 	sf::Vector2f position = mPlayerAircraft->getPosition();
 	sf::Vector2f velocity = mPlayerAircraft->getVelocity();
 
-	// If player touches borders, flip its X velocity
+	//own bound checker
+	//std::cout << "POSX: " << position.x << std::endl;
+	//std::cout << "POSY: " << position.y << std::endl;
+	//sf::Vector2f Relposition = mWorldView;
+
+	if (position.x <= 120.f) {
+		velocity.x = std::abs(velocity.x);
+		velocity.x = -velocity.x;
+		mPlayerAircraft->setVelocity(velocity);
+	}
+	if (position.x >= 520.f) {
+		velocity.x = std::abs(velocity.x);
+		mPlayerAircraft->setVelocity(velocity);
+	}
+	// If player touches borders, flip its X velocity ..not sure if this worked wrote own helper on top
+
 	if (position.x <= mWorldBounds.left + 150.f
 		|| position.x >= mWorldBounds.left + mWorldBounds.width - TEXDISTANCE)
 	{
@@ -46,7 +61,7 @@ void World::update(sf::Time dt)
 	//implement the looping background A1
 	static int iterator = 2;
 	static bool firstPass = true;
-	if (mPlayerAircraft->getWorldPosition().y <= -(textureRectArr[0].height * iterator - mSpawnPosition.y)) {
+	if (position.y <= -(textureRectArr[0].height * iterator - mSpawnPosition.y)) {
 		static int childIndex = 0;
 		std::cout << "threshold passed" << std::endl;
 		mSceneLayers[Background]->getChild(0)->setPosition(mWorldBounds.left, mWorldBounds.top - textureRectArr[0].height * (iterator + 1));
@@ -54,14 +69,11 @@ void World::update(sf::Time dt)
 		iterator += 3;
 		firstPass = false;
 	}
-	if ((mPlayerAircraft->getWorldPosition().y <= -(textureRectArr[0].height * (iterator - 1) - mSpawnPosition.y) && (!firstPass))) {
+	if ((position.y <= -(textureRectArr[0].height * (iterator - 1) - mSpawnPosition.y) && (!firstPass))) {
 		std::cout << "Green threshold passed" << std::endl;
 		mSceneLayers[Background]->getChild(2)->setPosition(mWorldBounds.left, mWorldBounds.top - textureRectArr[0].height * (iterator));
 
 	}
-
-
-
 }
 
 void World::draw()
@@ -88,7 +100,6 @@ void World::buildScene()
 		mSceneLayers[i] = layer.get();
 
 		mSceneGraph.attachChild(std::move(layer));
-
 	}
 
 	// Prepare the tiled desert background
@@ -140,9 +151,7 @@ void World::buildScene()
 	mPlayerAircraft->attachChild(std::move(rightEscort));
 
 }
-//Assignment1  for aircraft movement
 
 Aircraft* World::getAircraft() {
 	return mPlayerAircraft;
 }
-

@@ -49,17 +49,16 @@ void Game::run()
 	}
 }
 
-
 //A1 handle the keyboard presses and mouse
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-	if (key == sf::Keyboard::W)
+	if (key == sf::Keyboard::W || key == sf::Keyboard::Up)
 		mIsMovingUp = isPressed;
-	else if (key == sf::Keyboard::S)
+	else if (key == sf::Keyboard::S || key == sf::Keyboard::Down)
 		mIsMovingDown = isPressed;
-	else if (key == sf::Keyboard::A)
+	else if (key == sf::Keyboard::A || key == sf::Keyboard::Left)
 		mIsMovingLeft = isPressed;
-	else if (key == sf::Keyboard::D)
+	else if (key == sf::Keyboard::D || key == sf::Keyboard::Right)
 		mIsMovingRight = isPressed;
 }
 using namespace std;
@@ -76,13 +75,23 @@ void Game::doPlayerInput(sf::Time elapsed) {
 	if (mIsMovingRight)
 		movement.x += PLAYERSPEED;
 	if (mIsClicked) {
-		sf::Vector2f direction = (MousePos) - mWorld.getAircraft()->getPosition();
-		mWorld.getAircraft()->setPosition(direction);
-		//mWorld.getAircraft()->move(direction * elapsed.asSeconds() / 20.f);
-		//mIsClicked = false;
-	}
-	mWorld.getAircraft()->move(movement * elapsed.asSeconds());
+		/*move the craft to the position, in lab 2 this was done simply by me doing :
+		sf::Vector2f direction = (MousePos)-mPlayer.getPosition();
+		mPlayer.move(direction * elapsedTime.asSeconds());*/
 
+		movement.x = MousePos.x;
+		movement.y = -MousePos.y;
+		std::cout << MousePos.y << endl;
+		//sf::Vector2f movement = (MousePos) + mWorld.getAircraft()->getPosition();
+		//direction = direction / sqrt((std::pow(direction.x, 2.f)) + (std::pow(direction.y, 2.f)));
+		mWorld.getAircraft()->move(movement * elapsed.asSeconds());
+		//mWorld.getAircraft()->move(movement);
+		//mWorld.getAircraft()->setVelocity(40.f, -350.f * direction.y);
+		mWorld.getAircraft()->setVelocity(40.f, -350.f);
+		//mWorld.getAircraft()->setVelocity(direction);
+	} else {
+		mWorld.getAircraft()->move(movement * elapsed.asSeconds());
+	}
 }
 
 void Game::processEvents()
@@ -95,7 +104,8 @@ void Game::processEvents()
 		case sf::Event::MouseButtonPressed:
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				//Assignment1 
-				MousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition());
+				sf::Vector2i pix_pos = sf::Mouse::getPosition(mWindow);
+				MousePos = mWindow.mapPixelToCoords(pix_pos, mWindow.getView());
 				mIsClicked = true;
 			}
 			break;
